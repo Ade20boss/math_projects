@@ -1,5 +1,5 @@
 from math import sqrt, sin, cos, asin, degrees, acos
-def magnitude(vector):
+def magnitude():
     vector = list(input("Enter vector components separated by space: ").split())
     squares = []
     magnitude = 0
@@ -10,12 +10,21 @@ def magnitude(vector):
     for j in squares:
         magnitude += j
     new_magnitude = sqrt(magnitude)
-    return new_magnitude
+    print(round(new_magnitude, 2))
+
+
 def magnitude_for_cross_products(x, y, z):
-    square = (x**2) + (y**2) + (z**2)
+    square = ((int(x))**2) + ((int(y))**2) + ((int(z))**2)
     return sqrt(square)
+
+
 def add_vector():
-    num_of_vectors = int(input("Enter number of vectors: "))
+    while 1 == 1:
+        try:
+            num_of_vectors = int(input("Enter number of vectors: "))
+            break
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
     index_of_vectors = []
     list_lengths = []
     index_of_vectors2 = []
@@ -35,7 +44,6 @@ def add_vector():
         if len(l) < largest:
             for k in range(largest - len(l)):
                 l.append(0)
-    print(index_of_vectors)
 
     for _ in range(largest):
         vector = []
@@ -44,8 +52,6 @@ def add_vector():
     for vec in index_of_vectors:
         for i in range(largest):
             index_of_vectors2[i].append(vec[i])
-    print(index_of_vectors2)
-
     for vec in index_of_vectors2:
         total = 0
         for i in vec:
@@ -55,7 +61,12 @@ def add_vector():
     print(sums)
 
 def subtract_vector():
-    num_of_vectors1 = int(input("Enter number of vectors: "))
+    while True:
+        try:
+            num_of_vectors1 = int(input("Enter number of vectors: "))
+            break
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
     index_of_vectors = []
     list_lengths = []
     index_of_vectors2 = []
@@ -75,7 +86,6 @@ def subtract_vector():
         if len(l) < largest:
             for k in range(largest - len(l)):
                 l.append(0)
-    print(index_of_vectors)
 
     for _ in range(largest):
         vector = []
@@ -84,7 +94,6 @@ def subtract_vector():
     for vec in index_of_vectors:
         for i in range(largest):
             index_of_vectors2[i].append(vec[i])
-    print(index_of_vectors2)
 
     for vec in index_of_vectors2:
         total = int(vec[0])
@@ -95,58 +104,60 @@ def subtract_vector():
     print(sums)
 
 def dot_product():
-    vector1 = list(input("Enter vector components separated by space: ").split())
-    vector2 = list(input("Enter vector components separated by space: ").split())
-    largest = max(len(vector1), len(vector2))
     choice = input('Geometric calculation or component calculation(press 1 for geometric, 2 for component): ')
-    dotproduct = 0
     if choice == '2':
+        vector1 = input("Enter vector components separated by space: ").split()
+        vector2 = input("Enter vector components separated by space: ").split()
+        largest = max(len(vector1), len(vector2))
+        dotproduct = 0
         if len(vector1) < len(vector2):
             for i in range(largest - len(vector1)):
                 vector1.append(0)
+                vector1[-1] = int(vector1[-1])
         else:
             for i in range(largest - len(vector2)):
                 vector2.append(0)
+                vector2[-1] = int(vector2[-1])
         for x in range(largest):
             multiplied_num = int(vector1[x]) * int(vector2[x])
             dotproduct += multiplied_num
         print(dotproduct)
         choice2 = input("Do you want to calculate the angle between the two vectors? (press y for yes, n for no):")
         if choice2 == 'y':
-            angle_radians = acos((dotproduct)/(magnitude(vector1) * magnitude(vector2)))
-            angle_degrees = degrees(angle_radians)
+            angle_radians = (dotproduct/(magnitude_for_cross_products(vector1[0], vector1[1], vector1[2]) * magnitude_for_cross_products(vector2[0], vector2[1], vector2[2])))
+            angle_degrees = round(degrees(acos(angle_radians)), 2)
             print(f"The angle between the two vectors is {angle_degrees} degrees")
         else:
             exit()
     else:
-        magnitude_of_first_vector = int(input("Enter magnitude of first vector: "))
-        magnitude_of_second_vector = int(input("Enter magnitude of second vector: "))
-        angle = int(input("Enter angle between the two vectors: "))
-        dotproduct_geometric = magnitude_of_second_vector * magnitude_of_first_vector * sin(angle)
+        magnitude_of_first_vector = float(input("Enter magnitude of first vector: "))
+        magnitude_of_second_vector = float(input("Enter magnitude of second vector: "))
+        dotproduct1 = int(input("Enter dot product: "))
+        angle_process = dotproduct1 / (magnitude_of_first_vector * magnitude_of_second_vector)
+        angle = round(degrees(acos(angle_process)), 2)
+        dotproduct_geometric = magnitude_of_second_vector * magnitude_of_first_vector * cos(angle)
         print(dotproduct_geometric)
 
 def cross_product():
-    vector1 = list(input("Enter vector components separated by space: ").split())
-    vector2 = list(input("Enter vector components separated by space: ").split())
-    if len(vector1) != 3 or len(vector2) != 3:
-        print("Invalid vector")
-        exit()
-    x1 = int(vector1[0])
-    x2 = int(vector1[1])
-    x3 = int(vector1[2])
-    y1 = int(vector2[0])
-    y2 = int(vector2[1])
-    y3 = int(vector2[2])
-    largest = max(len(vector1), len(vector2))
-    crosproduct_list = []
     choice = input('Geometric calculation or component calculation(press 1 for geometric, 2 for component): ')
     if choice == '2':
+        vector1 = input("Enter vector components separated by space: ").split()
+        vector2 = input("Enter vector components separated by space: ").split()
+        largest = max(len(vector1), len(vector2))
         if len(vector1) < len(vector2):
             for i in range(largest - len(vector1)):
                 vector1.append(0)
-        else:
+        elif len(vector2) < len(vector1):
             for i in range(largest - len(vector2)):
                 vector2.append(0)
+        x1 = int(vector1[0])
+        x2 = int(vector1[1])
+        x3 = int(vector1[2])
+        y1 = int(vector2[0])
+        y2 = int(vector2[1])
+        y3 = int(vector2[2])
+
+        crosproduct_list = []
         cross_product1 = int(vector1[1]) * int(vector2[2]) - int(vector1[2]) * int(vector2[1])
         crosproduct_list.append(cross_product1)
         cross_product2 = int(vector1[2]) * int(vector2[0]) - int(vector1[0]) * int(vector2[2])
@@ -156,13 +167,51 @@ def cross_product():
         print(crosproduct_list)
         choice2 = input("Do you want to calculate the angle between the two vectors? (press y for yes, n for no):")
         if choice2 == 'y':
-            angle_radians = asin((magnitude_for_cross_products(cross_product1, cross_product2, cross_product3)) / (magnitude_for_cross_products(x1, x2, x3) * magnitude_for_cross_products(y1, y2, y3)))
-            angle_degrees = round(degrees(angle_radians), 2)
+            angle_radians = (magnitude_for_cross_products(cross_product1, cross_product2, cross_product3)) / (magnitude_for_cross_products(x1, x2, x3) * magnitude_for_cross_products(y1, y2, y3))
+            angle_degrees = round(degrees(asin(angle_radians)), 2)
             print(f"The angle between the two vectors is {angle_degrees} degrees")
         else:
             exit()
+    else:
+        magnitude_of_first_vector = float(input("Enter magnitude of first vector: "))
+        magnitude_of_second_vector = float(input("Enter magnitude of second vector: "))
+        cross_product_ = int(input("Enter magnitude of cross product: "))
+        angle_process = cross_product_ / (magnitude_of_first_vector * magnitude_of_second_vector)
+        angle = round(degrees(acos(angle_process)), 2)
+        crossproduct_geometric = magnitude_of_second_vector * magnitude_of_first_vector * sin(angle)
+        print(crossproduct_geometric)
 
+print("Welcome to VecPy - A vector mechanics calculator!")
+print("1. Add vectors")
+print("2. Subtract vectors")
+print("3. Dot product")
+print("4. Cross product")
+print("5. Magnitude")
+while True:
+    while True:
+        choice = input("Enter your choice: ")
+        if choice in ["1", "2", "3", "4", "5"]:
+            break
+        else:
+            print("Invalid choice. Please enter a number between 1 and 5.")
+            continue
+    if choice == "1":
+        add_vector()
+    elif choice == "2":
+        subtract_vector()
+    elif choice == "3":
+        dot_product()
+    elif choice == "4":
+        cross_product()
+    elif choice == "5":
+        magnitude()
 
+    redo = input("Do you want to do another calculation? (press y for yes, n for no): ")
+    if redo == "n":
+        print("Thank you for using VecPy!")
+        break
+    else:
+        continue
 
 
 
